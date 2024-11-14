@@ -285,4 +285,63 @@ public class BookRepository {
 
         return true;
     }
+
+    public Boolean drop() {
+        if (dropVisitorBook() && dropVisitor() && dropBook()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private Boolean dropVisitorBook() {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+
+            String query = new Queries().dropVisitorBook();
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private Boolean dropVisitor() {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+
+            String query = new Queries().dropVisitor();
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private Boolean dropBook() {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+
+            String query = new Queries().dropBook();
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+
+            return false;
+        }
+
+        return true;
+    }
 }

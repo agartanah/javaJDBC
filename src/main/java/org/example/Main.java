@@ -110,5 +110,9 @@ public class Main {
 
         List<BookOfVisitor> booksOfVisitor = bookRepository.getBooksOfVisitor(itsMe);
         System.out.println(booksOfVisitor);
+
+        if (bookRepository.drop()) {
+            System.out.println("Tables dropped");
+        }
     }
 }

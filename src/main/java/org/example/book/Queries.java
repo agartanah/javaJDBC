@@ -181,4 +181,16 @@ public class Queries {
     public String doubleApostrophe(String word) {
         return word.replace("'", "''");
     }
+
+    public String dropVisitorBook() {
+        return "DROP TABLE visitor_book";
+    }
+
+    public String dropVisitor() {
+        return "DROP TABLE visitor";
+    }
+
+    public String dropBook() {
+        return "DROP TABLE book";
+    }
 }
