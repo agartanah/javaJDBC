@@ -13,6 +13,10 @@ public class Queries {
         return "SELECT * FROM visitor";
     }
 
+    public String getVisitorsBooks() {
+        return "SELECT * FROM visitor_book";
+    }
+
     public String getSortBooks() {
         return """
                 SELECT *\s
@@ -25,6 +29,44 @@ public class Queries {
                 SELECT *\s
                 FROM book
                 WHERE publishingYear > 2000;""";
+    }
+
+    public String getBooksByNames(List<String> names) {
+        names.replaceAll(this::doubleApostrophe);
+
+        StringBuilder query = new StringBuilder("SELECT * FROM book");
+
+        IntStream.range(0, names.size())
+                .forEach(index -> {
+                    if (index == 0) {
+                        query.append(" WHERE name = '")
+                                .append(names.get(index))
+                                .append("'");
+                    } else {
+                        query.append(" OR name = '")
+                                .append(names.get(index))
+                                .append("'");
+                    }
+                });
+
+        query.append(';');
+
+        System.out.println(query.toString());
+
+        return query.toString();
+    }
+
+    public String getVisitorByNameSurname() {
+        return "SELECT * FROM visitor WHERE name = ? AND surname = ?";
+    }
+
+    public String getBooksOfVisitor() {
+        return """
+                SELECT v.name AS visitor_name, v.surname AS visitor_surname, b.name AS book_name, b.author AS book_author, b.publishingYear as book_publishingYear
+                FROM visitor v
+                JOIN visitor_book vb ON v.id = vb.visitor_id
+                JOIN book b ON vb.book_id = b.id
+                WHERE v.id = ?;""";
     }
 
     public String insertBooks(List<Book> books) {
@@ -44,9 +86,9 @@ public class Queries {
                                 .append(books.get(index).name)
                                 .append("', '")
                                 .append(books.get(index).author)
-                                .append("', '")
+                                .append("', ")
                                 .append(books.get(index).publishingYear)
-                                .append("', '")
+                                .append(", '")
                                 .append(books.get(index).isbn)
                                 .append("', '")
                                 .append(books.get(index).publisher)
@@ -56,9 +98,9 @@ public class Queries {
                                 .append(books.get(index).name)
                                 .append("', '")
                                 .append(books.get(index).author)
-                                .append("', '")
+                                .append("', ")
                                 .append(books.get(index).publishingYear)
-                                .append("', '")
+                                .append(", '")
                                 .append(books.get(index).isbn)
                                 .append("', '")
                                 .append(books.get(index).publisher)
@@ -89,9 +131,9 @@ public class Queries {
                                 .append(visitors.get(index).surname)
                                 .append("', '")
                                 .append(visitors.get(index).phone)
-                                .append("', '")
+                                .append("', ")
                                 .append(visitors.get(index).subscribed)
-                                .append("');");
+                                .append(");");
                     } else {
                         query.append(" ('")
                                 .append(visitors.get(index).name)
@@ -102,6 +144,32 @@ public class Queries {
                                 .append("', '")
                                 .append(visitors.get(index).subscribed)
                                 .append("'), ");
+                    }
+                });
+
+        System.out.println(query.toString());
+
+        return query.toString();
+    }
+
+    public String insertVisitorsBooks(List<VisitorBook> visitorsbooks) {
+
+        StringBuilder query = new StringBuilder("INSERT INTO visitor_book (visitor_id, book_id) VALUES");
+
+        IntStream.range(0, visitorsbooks.size())
+                .forEach(index -> {
+                    if (index == visitorsbooks.size() - 1) {
+                        query.append(" (")
+                                .append(visitorsbooks.get(index).visitor_id)
+                                .append(", ")
+                                .append(visitorsbooks.get(index).book_id)
+                                .append(");");
+                    } else {
+                        query.append(" (")
+                                .append(visitorsbooks.get(index).visitor_id)
+                                .append(", ")
+                                .append(visitorsbooks.get(index).book_id)
+                                .append("), ");
                     }
                 });
 

@@ -1,8 +1,6 @@
 package org.example;
 
-import org.example.book.Book;
-import org.example.book.BookRepository;
-import org.example.book.Visitor;
+import org.example.book.*;
 import org.example.music.Music;
 import org.example.music.MusicRepository;
 
@@ -79,5 +77,38 @@ public class Main {
         if (bookRepository.insertVisitors(visitors)) {
             System.out.println(bookRepository.getVisitors());
         }
+
+        List<Book> books = new LinkedList<>();
+        books.add(new Book(null, "Anna Karenina", "Lev Tolstoi", 1878, "90938721", "MOTHER RUSSIA"));
+        books.add(new Book(null, "Macbeth", "William Shakespeare", 1623, "83921321", "STUPID ENGLAND"));
+
+        if (bookRepository.insertBooks(books)) {
+            System.out.println(bookRepository.getBooks());
+        }
+
+        Visitor itsMe = bookRepository.getVisitorByNameSurname("Vladislav", "Vyatkin");
+        System.out.println(itsMe);
+
+        List<String> names = new LinkedList<>();
+        names.add("Anna Karenina");
+        names.add("Macbeth");
+
+        List<Book> myFavoriteBooks = bookRepository.getBooksByNames(names);
+        System.out.println(myFavoriteBooks);
+
+        List<VisitorBook> visitorsBooks = new LinkedList<>();
+
+        myFavoriteBooks.forEach((book) -> {
+            visitorsBooks.add(new VisitorBook(itsMe.getId(), book.getId()));
+        });
+
+        System.out.println(visitorsBooks);
+
+        if (bookRepository.insertVisitorsBooks(visitorsBooks)) {
+            System.out.println(bookRepository.getVisitorsBooks());
+        }
+
+        List<BookOfVisitor> booksOfVisitor = bookRepository.getBooksOfVisitor(itsMe);
+        System.out.println(booksOfVisitor);
     }
 }
