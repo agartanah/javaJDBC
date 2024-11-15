@@ -13,6 +13,23 @@ public class BookRepository {
         this.password = password;
     }
 
+    public Boolean create() {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+
+            String query = new Queries().create();
+
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+
+            return false;
+        }
+
+        return true;
+    }
+
     public List<Book> getBooks() {
         List<Book> books = new LinkedList<>();
 

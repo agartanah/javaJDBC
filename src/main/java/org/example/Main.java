@@ -20,6 +20,10 @@ public class Main {
 
     public static void main(String[] args) {
 
+        if (musicRepository.create()) {
+            System.out.println("Таблица создана!!!");
+        }
+
         // 1 задание
         System.out.println("ЗАДАНИЕ 1\n");
 
@@ -55,6 +59,10 @@ public class Main {
         System.out.println("ЗАДАНИЕ 4\n");
 
         // create-visitor-book.sql
+
+        if (bookRepository.create()) {
+            System.out.println("Таблицы созданы!!!");
+        }
 
         // 5 задание
         System.out.println("ЗАДАНИЕ 5\n");

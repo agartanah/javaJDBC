@@ -5,6 +5,41 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 class Queries {
+    public String create() {
+        return """
+                DROP TABLE IF EXISTS music;
+                
+                CREATE TABLE IF NOT EXISTS music
+                (
+                    id   SERIAL PRIMARY KEY,
+                    name TEXT NOT NULL
+                );
+                
+                INSERT INTO music (name)
+                SELECT * FROM (VALUES\s
+                       ('Bohemian Rhapsody'),
+                       ('Stairway to Heaven'),
+                       ('Imagine'),
+                       ('Sweet Child O Mine'),
+                       ('Hey Jude'),
+                       ('Hotel California'),
+                       ('Billie Jean'),
+                       ('Wonderwall'),
+                       ('Smells Like Teen Spirit'),
+                       ('Let It Be'),
+                       ('I Want It All'),
+                       ('November Rain'),
+                       ('Losing My Religion'),
+                       ('One'),
+                       ('With or Without You'),
+                       ('Sweet Caroline'),
+                       ('Yesterday'),
+                       ('Dont Stop Believin'),
+                       ('Crazy Train'),
+                       ('Always')) AS new_data(name)
+                WHERE NOT EXISTS (SELECT 1 FROM music);""";
+    }
+
     public String getMusics() {
         return "SELECT * FROM music;";
     }
